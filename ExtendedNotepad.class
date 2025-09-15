@@ -1,0 +1,171 @@
+// Source code is decompiled from a .class file using FernFlower decompiler (from Intellij IDEA).
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GraphicsEnvironment;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import javax.swing.Icon;
+import javax.swing.JColorChooser;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
+
+public class ExtendedNotepad extends JFrame {
+   private JTextArea textArea;
+   private JFileChooser fileChooser;
+
+   public ExtendedNotepad() {
+      this.setTitle("Extended Notepad");
+      this.setSize(700, 500);
+      this.setDefaultCloseOperation(3);
+      this.textArea = new JTextArea();
+      JScrollPane var1 = new JScrollPane(this.textArea);
+      this.add(var1, "Center");
+      this.fileChooser = new JFileChooser();
+      JMenuBar var2 = new JMenuBar();
+      JMenu var3 = new JMenu("File");
+      JMenuItem var4 = new JMenuItem("Open");
+      JMenuItem var5 = new JMenuItem("Save");
+      JMenuItem var6 = new JMenuItem("Exit");
+      var3.add(var4);
+      var3.add(var5);
+      var3.addSeparator();
+      var3.add(var6);
+      JMenu var7 = new JMenu("Edit");
+      JMenuItem var8 = new JMenuItem("Cut");
+      JMenuItem var9 = new JMenuItem("Copy");
+      JMenuItem var10 = new JMenuItem("Paste");
+      var7.add(var8);
+      var7.add(var9);
+      var7.add(var10);
+      JMenu var11 = new JMenu("Help");
+      JMenuItem var12 = new JMenuItem("About");
+      var11.add(var12);
+      JMenu var13 = new JMenu("Format");
+      JMenuItem var14 = new JMenuItem("Choose Font");
+      JMenuItem var15 = new JMenuItem("Choose Color");
+      var13.add(var14);
+      var13.add(var15);
+      var2.add(var3);
+      var2.add(var7);
+      var2.add(var11);
+      var2.add(var13);
+      this.setJMenuBar(var2);
+      var4.addActionListener((var1x) -> {
+         this.openFile();
+      });
+      var5.addActionListener((var1x) -> {
+         this.saveFile();
+      });
+      var6.addActionListener((var0) -> {
+         System.exit(0);
+      });
+      var8.addActionListener((var1x) -> {
+         this.textArea.cut();
+      });
+      var9.addActionListener((var1x) -> {
+         this.textArea.copy();
+      });
+      var10.addActionListener((var1x) -> {
+         this.textArea.paste();
+      });
+      var12.addActionListener((var1x) -> {
+         JOptionPane.showMessageDialog(this, "Extended Notepad\n Created by [M.H.M Nufais & 200102102400]", "About", 1);
+      });
+      var14.addActionListener((var1x) -> {
+         this.chooseFont();
+      });
+      var15.addActionListener((var1x) -> {
+         this.chooseColor();
+      });
+   }
+
+   private void openFile() {
+      int var1 = this.fileChooser.showOpenDialog(this);
+      if (var1 == 0) {
+         File var2 = this.fileChooser.getSelectedFile();
+
+         try {
+            BufferedReader var3 = new BufferedReader(new FileReader(var2));
+
+            try {
+               this.textArea.read(var3, (Object)null);
+            } catch (Throwable var7) {
+               try {
+                  var3.close();
+               } catch (Throwable var6) {
+                  var7.addSuppressed(var6);
+               }
+
+               throw var7;
+            }
+
+            var3.close();
+         } catch (IOException var8) {
+            JOptionPane.showMessageDialog(this, "Error opening file!");
+         }
+      }
+
+   }
+
+   private void saveFile() {
+      int var1 = this.fileChooser.showSaveDialog(this);
+      if (var1 == 0) {
+         File var2 = this.fileChooser.getSelectedFile();
+
+         try {
+            BufferedWriter var3 = new BufferedWriter(new FileWriter(var2));
+
+            try {
+               this.textArea.write(var3);
+            } catch (Throwable var7) {
+               try {
+                  var3.close();
+               } catch (Throwable var6) {
+                  var7.addSuppressed(var6);
+               }
+
+               throw var7;
+            }
+
+            var3.close();
+         } catch (IOException var8) {
+            JOptionPane.showMessageDialog(this, "Error saving file!");
+         }
+      }
+
+   }
+
+   private void chooseFont() {
+      String[] var1 = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+      String var2 = (String)JOptionPane.showInputDialog(this, "Select Font:", "Font Chooser", -1, (Icon)null, var1, var1[0]);
+      if (var2 != null) {
+         this.textArea.setFont(new Font(var2, 0, 16));
+      }
+
+   }
+
+   private void chooseColor() {
+      Color var1 = JColorChooser.showDialog(this, "Choose Text Color", Color.BLACK);
+      if (var1 != null) {
+         this.textArea.setForeground(var1);
+      }
+
+   }
+
+   public static void main(String[] var0) {
+      SwingUtilities.invokeLater(() -> {
+         (new ExtendedNotepad()).setVisible(true);
+      });
+   }
+}
