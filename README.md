@@ -26,9 +26,11 @@ This project is an enhancement of the traditional Notepad, built as a mini proje
 ## 📂 Project Structure
 
 ---
+## Create   Database file notePad
 
 ## 🛠️ Requirements
 - Java Development Kit (JDK) 8 or higher
+- Create Database notePad.db
 - Any Java IDE (IntelliJ, Eclipse, NetBeans) or plain terminal
 
 ---
